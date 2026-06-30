@@ -1,16 +1,14 @@
 import os
 from pathlib import Path
 
+from decouple import config as env, Csv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-def env(key, default=None):
-    return os.environ.get(key, default)
 
 
 SECRET_KEY = env("DJANGO_SECRET_KEY", "dev-insecure-change-me")
 DEBUG = env("DJANGO_DEBUG", "true").lower() == "true"
-ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1", cast=Csv())
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -96,6 +94,27 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-CORS_ALLOWED_ORIGINS = env(
-    "CORS_ALLOWED_ORIGINS", "http://localhost:3000"
-).split(",")
+CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS", "http://localhost:3000", cast=Csv())
+
+# --- Email ---
+# When SMTP host is set we send real email; otherwise fall back to the console
+# backend so reset codes are printed to the terminal during development.
+EMAIL_HOST = env("EMAIL_HOST", "")
+if EMAIL_HOST:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_PORT = env("EMAIL_PORT", 587, cast=int)
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", "")
+    EMAIL_USE_TLS = env("EMAIL_USE_TLS", "true").lower() == "true"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", "WasteLink <no-reply@wastelink.co.tz>")
+
+# --- Meseji SMS ---
+MESEJI_API_KEY = env("MESEJI_API_KEY", "")
+MESEJI_SENDER_ID = env("MESEJI_SENDER_ID", "WASTECH")
+
+# --- AzamPay ---
+AZAMPAY_APP_NAME = env("AZAMPAY_APP_NAME", "")
+AZAMPAY_CLIENT_ID = env("AZAMPAY_CLIENT_ID", "")
+AZAMPAY_CLIENT_SECRET = env("AZAMPAY_CLIENT_SECRET", "")

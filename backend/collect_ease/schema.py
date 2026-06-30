@@ -14,6 +14,7 @@ class CollectionJobType(DjangoObjectType):
     class Meta:
         model = CollectionJob
         fields = "__all__"
+        convert_choices_to_enum = False
 
 
 class PricingRuleType(DjangoObjectType):

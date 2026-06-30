@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { myTransactions, myWallet, requestWithdrawal } from "@/services/wallet";
+import { initiateDeposit, myTransactions, myWallet, requestWithdrawal } from "@/services/wallet";
 import { useTx } from "@/hooks/useTx";
 import { Field } from "@/components/ui/Field";
 import { Alert } from "@/components/ui/Alert";
@@ -11,6 +11,10 @@ export default function WalletPage() {
   const tx = useTx();
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [txs, setTxs] = useState<Transaction[]>([]);
+  const [depositAmount, setDepositAmount] = useState("");
+  const [depositPhone, setDepositPhone] = useState("");
+  const [depositBusy, setDepositBusy] = useState(false);
+
   const [amount, setAmount] = useState("");
   const [mobileMoneyNumber, setMobileMoneyNumber] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -30,6 +34,23 @@ export default function WalletPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  async function onDeposit(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setOk(null);
+    setDepositBusy(true);
+    try {
+      const result = await initiateDeposit(depositAmount, depositPhone);
+      setOk(result.message);
+      setDepositAmount("");
+      setDepositPhone("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setDepositBusy(false);
+    }
+  }
 
   async function onWithdraw(e: FormEvent) {
     e.preventDefault();
@@ -68,6 +89,36 @@ export default function WalletPage() {
           <span className="stat-label">{tx("Jumla iliyopatikana", "Total earned")}</span>
           <span className="stat-value">TSh {wallet ? wallet.totalEarned : "—"}</span>
         </div>
+      </div>
+
+      <div className="panel">
+        <h2 className="panel-title">{tx("Weka pesa", "Deposit")}</h2>
+        <form className="form" onSubmit={onDeposit}>
+          <Field label={tx("Kiasi (TSh)", "Amount (TSh)")}>
+            <input
+              className="input"
+              inputMode="decimal"
+              value={depositAmount}
+              onChange={(e) => setDepositAmount(e.target.value)}
+              required
+            />
+          </Field>
+          <Field label={tx("Namba ya M-Pesa/Airtel", "Mobile money number")}>
+            <input
+              className="input"
+              inputMode="tel"
+              value={depositPhone}
+              onChange={(e) => setDepositPhone(e.target.value)}
+              placeholder="07XXXXXXXX"
+              required
+            />
+          </Field>
+          <button className="btn btn-green btn-block" disabled={depositBusy}>
+            {depositBusy
+              ? tx("Inatuma…", "Sending…")
+              : tx("Weka pesa", "Deposit via AzamPay")}
+          </button>
+        </form>
       </div>
 
       <div className="panel">

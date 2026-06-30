@@ -19,7 +19,7 @@ export default function LanguageProvider({ children }: { children: ReactNode }) 
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("mali-lang") as Lang | null;
+      const saved = localStorage.getItem("wastelink-lang") as Lang | null;
       if (saved === "sw" || saved === "en") setLangState(saved);
     } catch {}
   }, []);
@@ -31,7 +31,7 @@ export default function LanguageProvider({ children }: { children: ReactNode }) 
   const setLang = (l: Lang) => {
     setLangState(l);
     try {
-      localStorage.setItem("mali-lang", l);
+      localStorage.setItem("wastelink-lang", l);
     } catch {}
   };
 

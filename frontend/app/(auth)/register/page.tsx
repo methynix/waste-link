@@ -1,21 +1,26 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { Suspense, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { register, requestOtp } from "@/services/auth";
 import { useTx } from "@/hooks/useTx";
 import { Field } from "@/components/ui/Field";
+import { PasswordInput } from "@/components/ui/PasswordField";
 import { Alert } from "@/components/ui/Alert";
 import type { Role } from "@/types";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const tx = useTx();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialRole = (searchParams.get("role") as Role) || "waste_generator";
+
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<Role>("waste_generator");
+  const [role, setRole] = useState<Role>(initialRole);
   const [collectorType, setCollectorType] = useState("normal");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -34,7 +39,7 @@ export default function RegisterPage() {
       });
       await requestOtp(phone);
       try {
-        localStorage.setItem("mali-pending-phone", phone);
+        localStorage.setItem("wastelink-pending-phone", phone);
       } catch {}
       router.push("/verify");
     } catch (err) {
@@ -62,7 +67,13 @@ export default function RegisterPage() {
             required
           />
         </Field>
-        <Field label={tx("Barua pepe", "Email address")} hint={tx("Tutakutumia ujumbe wa karibu na kukusaidia kurejesha nenosiri.", "We use this for your welcome message and password reset.")}>
+        <Field
+          label={tx("Barua pepe", "Email address")}
+          hint={tx(
+            "Tutakutumia ujumbe wa karibu na kukusaidia kurejesha nenosiri.",
+            "We use this for your welcome message and password reset."
+          )}
+        >
           <input
             className="input"
             type="email"
@@ -74,12 +85,13 @@ export default function RegisterPage() {
           />
         </Field>
         <Field label={tx("Nenosiri", "Password")}>
-          <input
-            className="input"
-            type="password"
+          <PasswordInput
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={setPassword}
+            autoComplete="new-password"
             required
+            showLabel={tx("Onyesha nenosiri", "Show password")}
+            hideLabel={tx("Ficha nenosiri", "Hide password")}
           />
         </Field>
         <Field label={tx("Wewe ni nani?", "What is your role?")}>
@@ -114,5 +126,13 @@ export default function RegisterPage() {
         <Link href="/login">{tx("Ingia", "Log in")}</Link>
       </p>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   );
 }

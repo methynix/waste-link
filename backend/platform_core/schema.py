@@ -8,12 +8,14 @@ class NotificationType(DjangoObjectType):
     class Meta:
         model = Notification
         fields = "__all__"
+        convert_choices_to_enum = False
 
 
 class DisputeType(DjangoObjectType):
     class Meta:
         model = Dispute
         fields = "__all__"
+        convert_choices_to_enum = False
 
 
 def _require_user(info):

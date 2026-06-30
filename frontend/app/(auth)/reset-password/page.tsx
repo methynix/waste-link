@@ -6,6 +6,7 @@ import Link from "next/link";
 import { resetPassword } from "@/services/auth";
 import { useTx } from "@/hooks/useTx";
 import { Field } from "@/components/ui/Field";
+import { PasswordInput } from "@/components/ui/PasswordField";
 import { Alert } from "@/components/ui/Alert";
 
 export default function ResetPasswordPage() {
@@ -13,7 +14,7 @@ export default function ResetPasswordPage() {
   const router = useRouter();
   const [email, setEmail] = useState(() => {
     try {
-      return localStorage.getItem("mali-reset-email") || "";
+      return localStorage.getItem("wastelink-reset-email") || "";
     } catch {
       return "";
     }
@@ -31,7 +32,7 @@ export default function ResetPasswordPage() {
       const ok = await resetPassword(email, code, newPassword);
       if (ok) {
         try {
-          localStorage.removeItem("mali-reset-email");
+          localStorage.removeItem("wastelink-reset-email");
         } catch {}
         router.push("/login");
       }
@@ -74,12 +75,13 @@ export default function ResetPasswordPage() {
           />
         </Field>
         <Field label={tx("Nenosiri jipya", "New password")}>
-          <input
-            className="input"
-            type="password"
+          <PasswordInput
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={setNewPassword}
+            autoComplete="new-password"
             required
+            showLabel={tx("Onyesha nenosiri", "Show password")}
+            hideLabel={tx("Ficha nenosiri", "Hide password")}
           />
         </Field>
         <button className="btn btn-blue btn-block" disabled={busy}>

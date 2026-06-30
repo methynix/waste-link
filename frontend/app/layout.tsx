@@ -20,12 +20,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Mali — Taka ni mali",
+  title: "WasteLink — Taka ni mali",
   description:
     "Request a waste pickup, sell recyclables, and get paid on your phone. Tanzania.",
   manifest: "/manifest.json",
-  applicationName: "Mali",
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "Mali" },
+  applicationName: "WasteLink",
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "WasteLink" },
   icons: {
     icon: [
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },

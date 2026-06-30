@@ -321,6 +321,30 @@ header.site {
 .btn-ghost:hover {
   background: rgba(16,36,63,.06);
 }
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn-outline:hover {
+  background: rgba(16,36,63,.05);
+}
+.btn-green {
+  background: #2e7d32;
+  color: var(--white);
+  border-color: #245c27;
+}
+.btn-green:hover {
+  background: #245c27;
+}
+.btn-red {
+  background: #b71c1c;
+  color: var(--white);
+  border-color: #8b1414;
+}
+.btn-red:hover {
+  background: #8b1414;
+}
 .btn-sm {
   font-size: .92rem;
   padding: 10px 15px;
@@ -1072,6 +1096,77 @@ footer.site {
 .badge-cancelled,.badge-failed,.badge-rejected {
   background: #fdecea;
   color: #8a1f17;
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(16,36,63,.48);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  animation: fade-in .14s ease;
+}
+.modal-dialog {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 30px 26px 24px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 28px 60px -12px rgba(16,36,63,.38);
+  animation: slide-up .16s ease;
+}
+.modal-title {
+  font-family: var(--display);
+  font-weight: 800;
+  color: var(--ink);
+  font-size: 1.35rem;
+  letter-spacing: -.02em;
+  margin: 0 0 8px;
+}
+.modal-body {
+  color: var(--muted);
+  margin: 0 0 22px;
+  font-size: .96rem;
+  line-height: 1.5;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slide-up {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.roles-auth-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.roles-auth-label {
+  font-size: .94rem;
+  color: var(--muted);
+  margin-right: 2px;
+  flex: 1;
 }
 @media (max-width:720px) {
   .stats {

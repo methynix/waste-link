@@ -12,7 +12,7 @@ export default function VerifyPage() {
   const router = useRouter();
   const [phone, setPhone] = useState(() => {
     try {
-      return localStorage.getItem("mali-pending-phone") || "";
+      return localStorage.getItem("wastelink-pending-phone") || "";
     } catch {
       return "";
     }

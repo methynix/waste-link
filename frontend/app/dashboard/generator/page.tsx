@@ -29,11 +29,53 @@ export default function GeneratorPage() {
   const [volume, setVolume] = useState<Volume>("small");
   const [preferredTime, setPreferredTime] = useState("");
   const [pickupAddress, setPickupAddress] = useState("");
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [locating, setLocating] = useState(false);
   const [estimate, setEstimate] = useState<string | null>(null);
   const [jobs, setJobs] = useState<CollectionJob[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  function useMyLocation() {
+    setError(null);
+    if (!("geolocation" in navigator)) {
+      setError(tx("Kifaa chako hakiruhusu eneo.", "Your device does not support location."));
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setCoords({ lat: latitude, lng: longitude });
+        // Try to fill a human-readable address; fall back to coordinates.
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+            { headers: { Accept: "application/json" } }
+          );
+          const data = await res.json();
+          setPickupAddress(
+            data?.display_name || `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
+          );
+        } catch {
+          setPickupAddress(`${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+        } finally {
+          setLocating(false);
+        }
+      },
+      () => {
+        setLocating(false);
+        setError(
+          tx(
+            "Imeshindikana kupata eneo. Ruhusu eneo kisha jaribu tena.",
+            "Could not get your location. Allow location access and try again."
+          )
+        );
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
 
   const load = useCallback(async () => {
     try {
@@ -72,10 +114,13 @@ export default function GeneratorPage() {
         volume,
         preferredTime: new Date(preferredTime).toISOString(),
         pickupAddress,
+        latitude: coords?.lat,
+        longitude: coords?.lng,
       });
       setOk(tx("Ombi limetumwa. Tunatafuta mkusanyaji.", "Request sent. We are finding a collector."));
       setPickupAddress("");
       setPreferredTime("");
+      setCoords(null);
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -110,7 +155,19 @@ export default function GeneratorPage() {
             <input className="input" type="datetime-local" value={preferredTime} onChange={(e) => setPreferredTime(e.target.value)} required />
           </Field>
           <Field label={tx("Mahali pa kuchukulia", "Pickup address")}>
-            <input className="input" value={pickupAddress} onChange={(e) => setPickupAddress(e.target.value)} placeholder={tx("Mtaa, nyumba, alama", "Street, house, landmark")} required />
+            <input className="input" value={pickupAddress} onChange={(e) => { setPickupAddress(e.target.value); setCoords(null); }} placeholder={tx("Mtaa, nyumba, alama", "Street, house, landmark")} required />
+            <button type="button" className="btn btn-outline btn-sm location-btn" onClick={useMyLocation} disabled={locating}>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+                <path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+              </svg>
+              {locating ? tx("Inatafuta eneo…", "Finding location…") : tx("Tumia eneo langu", "Use my current location")}
+            </button>
+            {coords ? (
+              <span className="field-hint">
+                {tx("Eneo limewekwa", "Location set")}: {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
+              </span>
+            ) : null}
           </Field>
           <p className="estimate">
             {tx("Makadirio ya bei", "Estimated price")}: <strong>{estimate && Number(estimate) > 0 ? `TSh ${estimate}` : tx("itapatikana wakati wa kuthibitisha", "set at confirmation")}</strong>

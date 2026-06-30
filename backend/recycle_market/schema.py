@@ -14,18 +14,21 @@ class RecyclingListingType(DjangoObjectType):
     class Meta:
         model = RecyclingListing
         fields = "__all__"
+        convert_choices_to_enum = False
 
 
 class OfferType(DjangoObjectType):
     class Meta:
         model = Offer
         fields = "__all__"
+        convert_choices_to_enum = False
 
 
 class SaleTransactionType(DjangoObjectType):
     class Meta:
         model = SaleTransaction
         fields = "__all__"
+        convert_choices_to_enum = False
 
 
 def _require_user(info):

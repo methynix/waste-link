@@ -3,14 +3,15 @@ import type { Role, User } from "@/types";
 
 export { clearToken } from "./api";
 
-export async function login(phone: string, password: string): Promise<void> {
-  const data = await graphql<{ tokenAuth: { token: string } }>(
-    `mutation ($phone: String!, $password: String!) {
-      tokenAuth(phone: $phone, password: $password) { token }
+// `identifier` may be a phone number or an email address.
+export async function login(identifier: string, password: string): Promise<void> {
+  const data = await graphql<{ loginUser: { token: string } }>(
+    `mutation ($identifier: String!, $password: String!) {
+      loginUser(identifier: $identifier, password: $password) { token }
     }`,
-    { phone, password }
+    { identifier, password }
   );
-  setToken(data.tokenAuth.token);
+  setToken(data.loginUser.token);
 }
 
 export interface RegisterInput {

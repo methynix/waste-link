@@ -3,13 +3,13 @@ export default function Footer() {
       <footer className="site">
               <div className="wrap foot">
                 <div>
-                  <a className="mark" href="#top" aria-label="Mali">
+                  <a className="mark" href="#top" aria-label="WasteLink">
                     <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
                       <rect x="1.5" y="1.5" width="37" height="37" rx="9" fill="#0D47A1"/>
                       <path d="M6 27 L24 9" stroke="#C0CA33" strokeWidth="7"/>
                       <circle cx="22" cy="22" r="8.5" fill="none" stroke="#fff" strokeWidth="3.4"/>
                     </svg>
-                    <span className="word">Mali</span>
+                    <span className="word">WasteLink</span>
                   </a>
                   <p className="tagline"><span data-sw>Taka ni mali.</span><span data-en>Waste is value.</span></p>
                 </div>
@@ -33,7 +33,7 @@ export default function Footer() {
               </div>
               <div className="stripe"></div>
               <div className="wrap foot-bottom">
-                <span>© {new Date().getFullYear()} Mali</span>
+                <span>© {new Date().getFullYear()} WasteLink</span>
                 <span><span data-sw>Imejengwa kwa ajili ya miji ya Tanzania na Methynix Software.</span><span data-en>Built for Tanzania's cities by Methynix Software.</span></span>
               </div>
             </footer>

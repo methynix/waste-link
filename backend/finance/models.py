@@ -63,3 +63,24 @@ class WithdrawalRequest(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+class DepositRequest(models.Model):
+    STATUS_CHOICES = (
+        ("pending", "Pending"),
+        ("completed", "Completed"),
+        ("failed", "Failed"),
+    )
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name="deposits")
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    mobile_money_number = models.CharField(max_length=15)
+    # Unique ID we send to AzamPay; matched in their callback to credit the wallet
+    azampay_external_id = models.CharField(max_length=100, unique=True)
+    azampay_transaction_id = models.CharField(max_length=100, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    created_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-created_at"]

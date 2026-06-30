@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
     try {
       await requestPasswordReset(email);
       try {
-        localStorage.setItem("mali-reset-email", email);
+        localStorage.setItem("wastelink-reset-email", email);
       } catch {}
       router.push("/reset-password");
     } catch (err) {

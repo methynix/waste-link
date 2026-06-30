@@ -74,3 +74,26 @@ class PhoneOTP(models.Model):
             code=code,
             expires_at=timezone.now() + timedelta(minutes=ttl_minutes),
         )
+
+
+class EmailOTP(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(db_index=True)
+    code = models.CharField(max_length=6)
+    is_used = models.BooleanField(default=False)
+    expires_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def is_valid(self):
+        return not self.is_used and timezone.now() < self.expires_at
+
+    @classmethod
+    def issue(cls, email, code, ttl_minutes=10):
+        return cls.objects.create(
+            email=email,
+            code=code,
+            expires_at=timezone.now() + timedelta(minutes=ttl_minutes),
+        )

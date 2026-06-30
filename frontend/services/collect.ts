@@ -32,12 +32,12 @@ export async function createPickup(
   input: CreatePickupInput
 ): Promise<CollectionJob> {
   const data = await graphql<{ createPickup: { job: CollectionJob } }>(
-    `mutation ($wasteType: String!, $volume: String!, $preferredTime: DateTime!, $pickupAddress: String!) {
-      createPickup(wasteType: $wasteType, volume: $volume, preferredTime: $preferredTime, pickupAddress: $pickupAddress) {
+    `mutation ($wasteType: String!, $volume: String!, $preferredTime: DateTime!, $pickupAddress: String!, $latitude: Float, $longitude: Float) {
+      createPickup(wasteType: $wasteType, volume: $volume, preferredTime: $preferredTime, pickupAddress: $pickupAddress, latitude: $latitude, longitude: $longitude) {
         job { ${JOB_FIELDS} }
       }
     }`,
-    input
+    input as unknown as Record<string, unknown>
   );
   return data.createPickup.job;
 }

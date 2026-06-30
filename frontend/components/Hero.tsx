@@ -14,8 +14,8 @@ export default function Hero() {
                       <span data-en>Waste is <span className="accent">value</span>.</span>
                     </h1>
                     <p className="sub">
-                      <span data-sw>Omba mtu akuchukulie taka, uza vitu vya kuchakata, na ulipwe kwa simu yako — popote ulipo Tanzania.</span>
-                      <span data-en>Request a pickup, sell your recyclables, and get paid on your phone — anywhere in Tanzania.</span>
+                      <span data-sw>Omba mtu akuchukulie taka, uza vitu vya kuchakata, na ulipwe kwa simu yako  popote ulipo Tanzania.</span>
+                      <span data-en>Request a pickup, sell your recyclables, and get paid on your phone  anywhere in Tanzania.</span>
                     </p>
                     <div className="hero-cta">
                       <a className="btn btn-blue" href="#roles">

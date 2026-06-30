@@ -1,6 +1,11 @@
 import { graphql } from "./api";
 import type { Transaction, Wallet } from "@/types";
 
+export interface DepositResult {
+  depositId: string;
+  message: string;
+}
+
 export async function myWallet(): Promise<Wallet> {
   const data = await graphql<{ myWallet: Wallet }>(
     `query { myWallet { id balance held totalEarned totalWithdrawn } }`
@@ -27,4 +32,20 @@ export async function requestWithdrawal(
     }`,
     { amount, mobileMoneyNumber }
   );
+}
+
+export async function initiateDeposit(
+  amount: string,
+  mobileMoneyNumber: string
+): Promise<DepositResult> {
+  const data = await graphql<{ initiateDeposit: DepositResult }>(
+    `mutation ($amount: Decimal!, $mobileMoneyNumber: String!) {
+      initiateDeposit(amount: $amount, mobileMoneyNumber: $mobileMoneyNumber) {
+        depositId
+        message
+      }
+    }`,
+    { amount, mobileMoneyNumber }
+  );
+  return data.initiateDeposit;
 }

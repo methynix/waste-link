@@ -90,3 +90,13 @@ export interface Transaction {
   status: string;
   createdAt: string;
 }
+
+export type DepositStatus = "pending" | "completed" | "failed";
+
+export interface DepositRequest {
+  id: string;
+  amount: string;
+  mobileMoneyNumber: string;
+  status: DepositStatus;
+  createdAt: string;
+}

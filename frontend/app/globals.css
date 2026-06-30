@@ -76,6 +76,12 @@ header.site{
 .btn-blue:hover{background:#0b3c87}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
 .btn-ghost:hover{background:rgba(16,36,63,.06)}
+.btn-outline{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn-outline:hover{background:rgba(16,36,63,.05)}
+.btn-green{background:#2e7d32;color:var(--white);border-color:#245c27}
+.btn-green:hover{background:#245c27}
+.btn-red{background:#b71c1c;color:var(--white);border-color:#8b1414}
+.btn-red:hover{background:#8b1414}
 .btn-sm{font-size:.92rem;padding:10px 15px;min-height:44px}
 
 .hero{padding:54px 0 18px}
@@ -192,6 +198,28 @@ footer.site{background:var(--paper);border-top:1px solid var(--line)}
 }
 .input:focus,.select:focus{outline:none;border-color:var(--blue)}
 
+/* Password input with show/hide toggle */
+.password-wrap{position:relative;display:flex;align-items:center}
+.password-wrap .input{padding-right:48px}
+.password-toggle{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  display:flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border:0;background:transparent;color:var(--muted);
+  cursor:pointer;border-radius:9px;
+}
+.password-toggle:hover{color:var(--ink);background:rgba(16,36,63,.06)}
+
+/* Phone / email segmented toggle */
+.seg-toggle{display:flex;gap:6px;background:#f3f5ee;border:1px solid var(--line);border-radius:11px;padding:4px;margin:0 0 16px}
+.seg-btn{
+  flex:1;border:0;background:transparent;color:var(--muted);cursor:pointer;
+  font-family:var(--body);font-weight:600;font-size:.95rem;padding:9px 12px;border-radius:8px;min-height:42px;
+}
+.seg-btn.active{background:var(--white);color:var(--ink);box-shadow:0 1px 3px rgba(16,36,63,.12)}
+
+/* Use-my-location button */
+.location-btn{display:inline-flex;align-items:center;gap:7px;width:auto}
+
 .alert{border-radius:11px;padding:12px 14px;font-size:.95rem;margin:0 0 16px}
 .alert-error{background:#fdecea;border:1px solid #f5c2c0;color:#8a1f17}
 .alert-ok{background:#eef6ec;border:1px solid #c3e0bd;color:#23611c}
@@ -237,6 +265,30 @@ footer.site{background:var(--paper);border-top:1px solid var(--line)}
 .badge-accepted,.badge-en_route,.badge-arrived,.badge-collected,.badge-active,.badge-inspecting{background:#e7f0fb;color:#0d47a1}
 .badge-completed,.badge-sold,.badge-released{background:#eaf6e8;color:#23611c}
 .badge-cancelled,.badge-failed,.badge-rejected{background:#fdecea;color:#8a1f17}
+
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(16,36,63,.48);
+  backdrop-filter:blur(3px);
+  display:flex;align-items:center;justify-content:center;
+  padding:22px;
+  animation:fade-in .14s ease;
+}
+.modal-dialog{
+  background:var(--white);border-radius:18px;
+  padding:30px 26px 24px;
+  width:100%;max-width:380px;
+  box-shadow:0 28px 60px -12px rgba(16,36,63,.38);
+  animation:slide-up .16s ease;
+}
+.modal-title{font-family:var(--display);font-weight:800;color:var(--ink);font-size:1.35rem;letter-spacing:-.02em;margin:0 0 8px}
+.modal-body{color:var(--muted);margin:0 0 22px;font-size:.96rem;line-height:1.5}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes slide-up{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.roles-auth-bar{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.roles-auth-label{font-size:.94rem;color:var(--muted);margin-right:2px;flex:1}
 
 @media (max-width:720px){
   .stats{grid-template-columns:1fr}
