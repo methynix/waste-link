@@ -7,18 +7,18 @@ import { Alert } from "@/components/ui/Alert";
 import { StatusBadge } from "@/components/dashboard/StatusBadge";
 import type { CollectionJob, JobStatus } from "@/types";
 
+// The collector drives the job up to "collected"; the customer then confirms
+// receipt and settles payment (Bolt-style), so the chain stops at "collected".
 const NEXT_STATUS: Partial<Record<JobStatus, JobStatus>> = {
   accepted: "en_route",
   en_route: "arrived",
   arrived: "collected",
-  collected: "completed",
 };
 
 const NEXT_LABEL: Record<string, [string, string]> = {
   en_route: ["Niko njiani", "On my way"],
   arrived: ["Nimefika", "I have arrived"],
   collected: ["Nimekusanya", "Collected"],
-  completed: ["Maliza", "Finish"],
 };
 
 export default function CollectorPage() {
@@ -113,6 +113,10 @@ export default function CollectorPage() {
                   <button className="btn btn-blue btn-sm" disabled={busy === job.id} onClick={() => onAdvance(job)}>
                     {tx(label[0], label[1])}
                   </button>
+                ) : job.status === "collected" ? (
+                  <span className="row-note">
+                    {tx("Inasubiri mteja athibitishe malipo", "Waiting for customer to confirm payment")}
+                  </span>
                 ) : null}
               </div>
             );

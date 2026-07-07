@@ -1,12 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { createPickup, estimatePickup, myJobs } from "@/services/collect";
+import {
+  confirmCompletion,
+  createPickup,
+  estimatePickup,
+  myJobs,
+  paymentConfig,
+} from "@/services/collect";
 import { useTx } from "@/hooks/useTx";
 import { Field } from "@/components/ui/Field";
 import { Alert } from "@/components/ui/Alert";
+import { Modal } from "@/components/ui/Modal";
 import { StatusBadge } from "@/components/dashboard/StatusBadge";
-import type { CollectionJob, Volume, WasteType } from "@/types";
+import type { CollectionJob, PaymentMethod, Volume, WasteType } from "@/types";
 
 const WASTE_TYPES: [WasteType, string, string][] = [
   ["household", "Taka za nyumbani", "Household"],
@@ -31,11 +38,24 @@ export default function GeneratorPage() {
   const [pickupAddress, setPickupAddress] = useState("");
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
+  const [mobileEnabled, setMobileEnabled] = useState(false);
+  const [mobilePopup, setMobilePopup] = useState(false);
   const [estimate, setEstimate] = useState<string | null>(null);
   const [jobs, setJobs] = useState<CollectionJob[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [confirming, setConfirming] = useState<string | null>(null);
+
+  function chooseMobile() {
+    if (mobileEnabled) {
+      setPaymentMethod("mobile");
+    } else {
+      // Not available yet — show the popup and keep cash selected.
+      setMobilePopup(true);
+    }
+  }
 
   function useMyLocation() {
     setError(null);
@@ -87,7 +107,29 @@ export default function GeneratorPage() {
 
   useEffect(() => {
     load();
+    paymentConfig()
+      .then((cfg) => setMobileEnabled(cfg.mobileMoneyEnabled))
+      .catch(() => setMobileEnabled(false));
   }, [load]);
+
+  async function onConfirm(job: CollectionJob) {
+    setConfirming(job.id);
+    setError(null);
+    setOk(null);
+    try {
+      await confirmCompletion(job.id);
+      setOk(
+        job.paymentMethod === "cash"
+          ? tx("Umethibitisha. Lipa mkusanyaji taslimu.", "Confirmed. Pay the collector in cash.")
+          : tx("Umethibitisha malipo.", "Payment confirmed.")
+      );
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setConfirming(null);
+    }
+  }
 
   useEffect(() => {
     let active = true;
@@ -116,11 +158,13 @@ export default function GeneratorPage() {
         pickupAddress,
         latitude: coords?.lat,
         longitude: coords?.lng,
+        paymentMethod,
       });
       setOk(tx("Ombi limetumwa. Tunatafuta mkusanyaji.", "Request sent. We are finding a collector."));
       setPickupAddress("");
       setPreferredTime("");
       setCoords(null);
+      setPaymentMethod("cash");
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -169,6 +213,31 @@ export default function GeneratorPage() {
               </span>
             ) : null}
           </Field>
+          <Field label={tx("Njia ya malipo", "Payment method")}>
+            <div className="pay-options">
+              <button
+                type="button"
+                className={paymentMethod === "cash" ? "pay-option active" : "pay-option"}
+                onClick={() => setPaymentMethod("cash")}
+              >
+                <span className="pay-option-title">{tx("Taslimu", "Cash")}</span>
+                <span className="pay-option-sub">{tx("Lipa wakati wa kuchukua", "Pay on collection")}</span>
+              </button>
+              <button
+                type="button"
+                className={paymentMethod === "mobile" ? "pay-option active" : "pay-option"}
+                onClick={chooseMobile}
+                aria-disabled={!mobileEnabled}
+              >
+                <span className="pay-option-title">{tx("Simu (M-Pesa n.k.)", "Mobile money")}</span>
+                <span className="pay-option-sub">
+                  {mobileEnabled
+                    ? tx("Lipa kwa simu", "Pay by phone")
+                    : tx("Haipatikani bado", "Not available yet")}
+                </span>
+              </button>
+            </div>
+          </Field>
           <p className="estimate">
             {tx("Makadirio ya bei", "Estimated price")}: <strong>{estimate && Number(estimate) > 0 ? `TSh ${estimate}` : tx("itapatikana wakati wa kuthibitisha", "set at confirmation")}</strong>
           </p>
@@ -188,12 +257,45 @@ export default function GeneratorPage() {
               <div>
                 <div className="row-title">{job.wasteType} · {job.volume}</div>
                 <div className="row-meta">{job.pickupAddress}</div>
+                <div className="row-meta">
+                  {job.paymentMethod === "cash" ? tx("Taslimu", "Cash") : tx("Simu", "Mobile money")}
+                  {job.status === "completed"
+                    ? ` · ${tx("Imelipwa", "Paid")}`
+                    : ""}
+                </div>
               </div>
-              <StatusBadge status={job.status} />
+              <div className="row-actions">
+                <StatusBadge status={job.status} />
+                {job.status === "collected" ? (
+                  <button
+                    className="btn btn-green btn-sm"
+                    disabled={confirming === job.id}
+                    onClick={() => onConfirm(job)}
+                  >
+                    {confirming === job.id
+                      ? tx("Inathibitisha…", "Confirming…")
+                      : tx("Thibitisha na lipa", "Confirm & pay")}
+                  </button>
+                ) : null}
+              </div>
             </div>
           ))}
         </div>
       )}
+
+      <Modal
+        open={mobilePopup}
+        onClose={() => setMobilePopup(false)}
+        title={tx("Malipo ya simu hayapatikani", "Mobile money unavailable")}
+        body={tx(
+          "Malipo kwa simu hayapatikani kwa sasa. Tafadhali tumia taslimu.",
+          "Mobile money payments are not available right now. Please use cash."
+        )}
+      >
+        <button className="btn btn-blue btn-sm" onClick={() => setMobilePopup(false)}>
+          {tx("Sawa, tumia taslimu", "OK, use cash")}
+        </button>
+      </Modal>
     </div>
   );
 }

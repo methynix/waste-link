@@ -1,8 +1,14 @@
 import { graphql } from "./api";
-import type { CollectionJob, JobStatus, Volume, WasteType } from "@/types";
+import type {
+  CollectionJob,
+  JobStatus,
+  PaymentMethod,
+  Volume,
+  WasteType,
+} from "@/types";
 
 const JOB_FIELDS = `
-  id wasteType volume pickupAddress preferredTime status paymentStatus
+  id wasteType volume pickupAddress preferredTime status paymentStatus paymentMethod
   estimatedPrice finalPrice createdAt
 `;
 
@@ -13,6 +19,14 @@ export interface CreatePickupInput {
   pickupAddress: string;
   latitude?: number;
   longitude?: number;
+  paymentMethod: PaymentMethod;
+}
+
+export async function paymentConfig(): Promise<{ mobileMoneyEnabled: boolean }> {
+  const data = await graphql<{ paymentConfig: { mobileMoneyEnabled: boolean } }>(
+    `query { paymentConfig { mobileMoneyEnabled } }`
+  );
+  return data.paymentConfig;
 }
 
 export async function estimatePickup(
@@ -32,8 +46,8 @@ export async function createPickup(
   input: CreatePickupInput
 ): Promise<CollectionJob> {
   const data = await graphql<{ createPickup: { job: CollectionJob } }>(
-    `mutation ($wasteType: String!, $volume: String!, $preferredTime: DateTime!, $pickupAddress: String!, $latitude: Float, $longitude: Float) {
-      createPickup(wasteType: $wasteType, volume: $volume, preferredTime: $preferredTime, pickupAddress: $pickupAddress, latitude: $latitude, longitude: $longitude) {
+    `mutation ($wasteType: String!, $volume: String!, $preferredTime: DateTime!, $pickupAddress: String!, $latitude: Float, $longitude: Float, $paymentMethod: String) {
+      createPickup(wasteType: $wasteType, volume: $volume, preferredTime: $preferredTime, pickupAddress: $pickupAddress, latitude: $latitude, longitude: $longitude, paymentMethod: $paymentMethod) {
         job { ${JOB_FIELDS} }
       }
     }`,
@@ -82,4 +96,14 @@ export async function updateJobStatus(
     { jobId, status }
   );
   return data.updateJobStatus.job;
+}
+
+export async function confirmCompletion(jobId: string): Promise<CollectionJob> {
+  const data = await graphql<{ confirmCompletion: { job: CollectionJob } }>(
+    `mutation ($jobId: UUID!) {
+      confirmCompletion(jobId: $jobId) { job { ${JOB_FIELDS} } }
+    }`,
+    { jobId }
+  );
+  return data.confirmCompletion.job;
 }

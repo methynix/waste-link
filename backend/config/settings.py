@@ -96,19 +96,33 @@ AUTHENTICATION_BACKENDS = [
 
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS", "http://localhost:3000", cast=Csv())
 
-# --- Email ---
-# When SMTP host is set we send real email; otherwise fall back to the console
-# backend so reset codes are printed to the terminal during development.
-EMAIL_HOST = env("EMAIL_HOST", "")
+# --- Email (Resend) ---
+# A Resend API key doubles as the SMTP password, so we accept it under either
+# name and prefer the HTTP API (more robust than SMTP on hosts that block port
+# 465). The "from" address must be on a Resend-verified domain (methynix.com).
+RESEND_API_KEY = env("RESEND_API_KEY", "") or env("SMTP_PASS", "")
+DEFAULT_FROM_EMAIL = env("EMAIL_FROM", env("DEFAULT_FROM_EMAIL", "WasteLink <info@methynix.com>"))
+
+# SMTP fallback — only used when no Resend key is set. Resend uses
+# smtp.resend.com:465 (SSL). Otherwise the console backend prints codes to the
+# terminal during development.
+EMAIL_HOST = env("SMTP_HOST", env("EMAIL_HOST", ""))
 if EMAIL_HOST:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_PORT = env("EMAIL_PORT", 587, cast=int)
-    EMAIL_HOST_USER = env("EMAIL_HOST_USER", "")
-    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", "")
-    EMAIL_USE_TLS = env("EMAIL_USE_TLS", "true").lower() == "true"
+    EMAIL_HOST_USER = env("SMTP_USER", env("EMAIL_HOST_USER", "resend"))
+    EMAIL_HOST_PASSWORD = env("SMTP_PASS", env("EMAIL_HOST_PASSWORD", ""))
+    EMAIL_PORT = env("SMTP_PORT", 465, cast=int)
+    if EMAIL_PORT == 465:
+        EMAIL_USE_SSL = True
+    else:
+        EMAIL_USE_TLS = True
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", "WasteLink <no-reply@wastelink.co.tz>")
+
+# --- Payments ---
+# No mobile-money gateway keys yet, so mobile money is disabled and cash is the
+# working option. Flip to "true" once AzamPay (or another gateway) is wired up.
+PAYMENTS_MOBILE_ENABLED = env("PAYMENTS_MOBILE_ENABLED", "false").lower() == "true"
 
 # --- Meseji SMS ---
 MESEJI_API_KEY = env("MESEJI_API_KEY", "")

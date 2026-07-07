@@ -31,6 +31,7 @@ export type JobStatus =
   | "cancelled";
 
 export type PaymentStatus = "unpaid" | "held" | "released" | "failed";
+export type PaymentMethod = "cash" | "mobile";
 
 export interface CollectionJob {
   id: string;
@@ -40,6 +41,7 @@ export interface CollectionJob {
   preferredTime: string;
   status: JobStatus;
   paymentStatus: PaymentStatus;
+  paymentMethod: PaymentMethod;
   estimatedPrice: string;
   finalPrice?: string | null;
   createdAt: string;

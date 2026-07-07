@@ -47,6 +47,10 @@ class CollectionJob(models.Model):
         ("released", "Released"),
         ("failed", "Failed"),
     )
+    PAYMENT_METHODS = (
+        ("cash", "Cash on collection"),
+        ("mobile", "Mobile money"),
+    )
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     customer = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="requested_jobs"
@@ -70,6 +74,7 @@ class CollectionJob(models.Model):
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="searching")
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS, default="unpaid")
+    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default="cash")
 
     generator_rating = models.PositiveSmallIntegerField(null=True, blank=True)
     collector_rating = models.PositiveSmallIntegerField(null=True, blank=True)

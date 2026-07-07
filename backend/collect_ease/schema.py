@@ -2,6 +2,7 @@ import uuid
 from decimal import Decimal
 
 import graphene
+from django.conf import settings
 from django.utils import timezone
 from graphene_django import DjangoObjectType
 
@@ -39,12 +40,18 @@ class CreatePickup(graphene.Mutation):
         latitude = graphene.Float()
         longitude = graphene.Float()
         photo_url = graphene.String()
+        payment_method = graphene.String()
 
     job = graphene.Field(CollectionJobType)
 
     def mutate(self, info, waste_type, volume, preferred_time, pickup_address,
-               latitude=None, longitude=None, photo_url=None):
+               latitude=None, longitude=None, photo_url=None, payment_method="cash"):
         user = _require_user(info)
+        if payment_method not in {"cash", "mobile"}:
+            payment_method = "cash"
+        # Guard the mobile-money path even if the UI is bypassed.
+        if payment_method == "mobile" and not settings.PAYMENTS_MOBILE_ENABLED:
+            raise Exception("Mobile money payments are not available yet. Please choose cash.")
         price = estimate_price(waste_type, volume)
         job = CollectionJob.objects.create(
             customer=user,
@@ -56,6 +63,7 @@ class CreatePickup(graphene.Mutation):
             longitude=longitude,
             photo_url=photo_url,
             estimated_price=price,
+            payment_method=payment_method,
         )
         return CreatePickup(job=job)
 
@@ -112,7 +120,8 @@ class ConfirmCompletion(graphene.Mutation):
             raise Exception("Only the customer can confirm completion.")
         config = PlatformConfig.current()
         price = Decimal(final_price) if final_price is not None else job.estimated_price
-        commission = (price * config.collection_commission_rate).quantize(Decimal("0.01"))
+        rate = Decimal(str(config.collection_commission_rate))
+        commission = (price * rate).quantize(Decimal("0.01"))
         job.final_price = price
         job.commission = commission
         job.collector_payout = price - commission
@@ -122,7 +131,11 @@ class ConfirmCompletion(graphene.Mutation):
         job.save()
         if job.collector and hasattr(job.collector, "wallet"):
             wallet = job.collector.wallet
-            wallet.balance += job.collector_payout
+            # For cash the collector was paid in hand, so we record the earnings
+            # but do not add to the withdrawable balance. Mobile/online payments
+            # flow through the platform and top up the balance.
+            if job.payment_method != "cash":
+                wallet.balance += job.collector_payout
             wallet.total_earned += job.collector_payout
             wallet.save()
             Transaction.objects.create(
@@ -155,13 +168,23 @@ class RateJob(graphene.Mutation):
         return RateJob(job=job)
 
 
+class PaymentConfigType(graphene.ObjectType):
+    mobile_money_enabled = graphene.Boolean()
+
+
 class Query(graphene.ObjectType):
     my_jobs = graphene.List(CollectionJobType)
     open_jobs = graphene.List(CollectionJobType)
+    payment_config = graphene.Field(PaymentConfigType)
     estimate_pickup = graphene.Decimal(
         waste_type=graphene.String(required=True),
         volume=graphene.String(required=True),
     )
+
+    def resolve_payment_config(self, info):
+        return PaymentConfigType(
+            mobile_money_enabled=settings.PAYMENTS_MOBILE_ENABLED
+        )
 
     def resolve_my_jobs(self, info):
         user = _require_user(info)
