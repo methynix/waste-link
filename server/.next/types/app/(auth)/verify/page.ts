@@ -1,8 +1,8 @@
-// File: /home/methynix/Documents/web development/waste-tech/frontend/app/page.tsx
-import * as entry from '../../../app/page.js'
+// File: /home/methynix/Documents/web development/waste-tech/frontend/app/(auth)/verify/page.tsx
+import * as entry from '../../../../../app/(auth)/verify/page.jsx'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../app/page.js')
+type TEntry = typeof import('../../../../../app/(auth)/verify/page.jsx')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }
