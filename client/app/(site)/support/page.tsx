@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Support Us",
   description:
-    "Help sustain WasteLink — back the infrastructure, partner with us, or contribute to keeping waste collection accessible across Tanzania.",
+    "Help sustain Ecothynx — back the infrastructure, partner with us, or contribute to keeping waste collection accessible across Tanzania.",
   alternates: { canonical: "/support" },
 };
 
@@ -16,11 +16,11 @@ export default function SupportPage() {
       </h1>
       <p className="lead">
         <span data-sw>
-          WasteLink ni jukwaa lisilo na faida kubwa linalounganisha wazalishaji wa taka,
+          Ecothynx ni jukwaa lisilo na faida kubwa linalounganisha wazalishaji wa taka,
           wakusanyaji na wachakataji. Msaada wako unatuwezesha kuendesha jukwaa na kulikuza.
         </span>
         <span data-en>
-          WasteLink is a mission-driven platform connecting waste generators, collectors,
+          Ecothynx is a mission-driven platform connecting waste generators, collectors,
           and recyclers. Your support keeps the platform running and growing.
         </span>
       </p>
@@ -32,20 +32,20 @@ export default function SupportPage() {
         </h2>
         <p>
           <span data-sw>
-            Uendeshaji wa WasteLink una gharama halisi — seva, hifadhidata, ujumbe wa SMS,
+            Uendeshaji wa Ecothynx una gharama halisi: seva, hifadhidata, ujumbe wa SMS,
             barua pepe na muda wa maendeleo. Kama ungependa kuchangia kifedha, unaweza kufadhili
             gharama hizi za miundombinu na uendeshaji ili huduma ibaki nafuu kwa watumiaji wa Tanzania.
             Wasiliana nasi tukupe njia salama ya kuchangia.
           </span>
           <span data-en>
-            Running WasteLink has real costs — servers, the database, SMS and email delivery,
+            Running Ecothynx has real costs:  servers, the database, SMS and email delivery,
             and development time. If you would like to contribute financially, you can help fund
             this infrastructure and operational overhead so the service stays affordable for
             Tanzanian users. Reach out and we&apos;ll share a secure way to contribute.
           </span>
         </p>
         <p>
-          <a href="mailto:info@methynix.com?subject=Supporting%20WasteLink" className="foot-brand">
+          <a href="mailto:info@methynix.com?subject=Supporting%20Ecothynx" className="foot-brand">
             info@methynix.com
           </a>
         </p>
@@ -71,10 +71,10 @@ export default function SupportPage() {
           <h3><span data-sw>Eneza habari</span><span data-en>Spread the word</span></h3>
           <p>
             <span data-sw>
-              Waambie majirani, wafanyabiashara na wakusanyaji kuhusu WasteLink. Ukuaji unaanzia kwa jamii.
+              Waambie majirani, wafanyabiashara na wakusanyaji kuhusu Ecothynx. Ukuaji unaanzia kwa jamii.
             </span>
             <span data-en>
-              Tell neighbours, businesses, and collectors about WasteLink. Growth starts in the community.
+              Tell neighbours, businesses, and collectors about Ecothynx. Growth starts in the community.
             </span>
           </p>
         </div>

@@ -19,15 +19,15 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL = "https://wastelink.methynix.com";
+const SITE_URL = "https://ecothynx.methynix.com";
 const SITE_DESCRIPTION =
-  "WasteLink connects waste generators with collectors and recyclers across Tanzania. Request a waste pickup, sell recyclables, and get paid on your phone.";
+  "Ecothynx connects waste generators with collectors and recyclers across Tanzania. Request a waste pickup, sell recyclables, and get paid on your phone.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "WasteLink — Taka ni mali | Waste collection & recycling in Tanzania",
-    template: "%s | WasteLink",
+    default: "Ecothynx — Taka ni mali | Waste collection & recycling in Tanzania",
+    template: "%s | Ecothynx",
   },
   description: SITE_DESCRIPTION,
   keywords: [
@@ -38,15 +38,15 @@ export const metadata: Metadata = {
     "kuchakata taka",
     "waste pickup Dar es Salaam",
     "sell recyclables Tanzania",
-    "WasteLink",
+    "Ecothynx",
     "Methynix",
   ],
   authors: [{ name: "Methynix Software", url: "https://methynix.com" }],
   creator: "Methynix Software",
   publisher: "Methynix Software",
   manifest: "/manifest.json",
-  applicationName: "WasteLink",
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "WasteLink" },
+  applicationName: "Ecothynx",
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Ecothynx" },
   alternates: { canonical: "/" },
   robots: {
     index: true,
@@ -56,18 +56,18 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "WasteLink",
-    title: "WasteLink — Taka ni mali",
+    siteName: "Ecothynx",
+    title: "Ecothynx — Taka ni mali",
     description: SITE_DESCRIPTION,
     locale: "sw_TZ",
     alternateLocale: "en_US",
     images: [
-      { url: "/icons/icon-512.png", width: 512, height: 512, alt: "WasteLink" },
+      { url: "/icons/icon-512.png", width: 512, height: 512, alt: "Ecothynx" },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "WasteLink — Taka ni mali",
+    title: "Ecothynx — Taka ni mali",
     description: SITE_DESCRIPTION,
     images: ["/icons/icon-512.png"],
   },

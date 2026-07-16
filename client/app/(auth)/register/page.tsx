@@ -39,7 +39,7 @@ function RegisterForm() {
       });
       await requestOtp(phone);
       try {
-        localStorage.setItem("wastelink-pending-phone", phone);
+        localStorage.setItem("ecothynx-pending-phone", phone);
       } catch {}
       router.push("/verify");
     } catch (err) {

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Terms & Conditions",
   description:
-    "The terms and conditions governing the use of the WasteLink waste collection and recycling platform in Tanzania.",
+    "The terms and conditions governing the use of the Ecothynx waste collection and recycling platform in Tanzania.",
   alternates: { canonical: "/terms" },
 };
 
@@ -21,21 +21,21 @@ export default function TermsPage() {
 
       <p className="lead">
         <span data-sw>
-          Kwa kutumia WasteLink, unakubali masharti yafuatayo. Tafadhali yasome kwa makini.
+          Kwa kutumia Ecothynx, unakubali masharti yafuatayo. Tafadhali yasome kwa makini.
         </span>
         <span data-en>
-          By using WasteLink, you agree to the following terms. Please read them carefully.
+          By using Ecothynx, you agree to the following terms. Please read them carefully.
         </span>
       </p>
 
       <h2><span data-sw>1. Kuhusu huduma</span><span data-en>1. About the service</span></h2>
       <p>
         <span data-sw>
-          WasteLink ni jukwaa linalounganisha wazalishaji wa taka na wakusanyaji, madereva wa malori,
+          Ecothynx ni jukwaa linalounganisha wazalishaji wa taka na wakusanyaji, madereva wa malori,
           na wachakataji. Sisi tunawezesha muunganiko; huduma halisi ya ukusanyaji hutolewa na watumiaji wenyewe.
         </span>
         <span data-en>
-          WasteLink is a platform that connects waste generators with collectors, truck drivers,
+          Ecothynx is a platform that connects waste generators with collectors, truck drivers,
           and recyclers. We facilitate the connection; the actual collection service is provided by the users themselves.
         </span>
       </p>
@@ -51,11 +51,11 @@ export default function TermsPage() {
       <p>
         <span data-sw>
           Malipo yanaweza kufanywa kwa taslimu wakati wa ukusanyaji au kwa njia za simu pale zinapopatikana.
-          Bei hukubaliwa kabla ya huduma. WasteLink inaweza kutoza ada ndogo ya uendeshaji kwenye kila muamala.
+          Bei hukubaliwa kabla ya huduma. Ecothynx inaweza kutoza ada ndogo ya uendeshaji kwenye kila muamala.
         </span>
         <span data-en>
           Payments may be made in cash on collection, or via mobile money where available.
-          Prices are agreed before the service. WasteLink may charge a small operational commission on each transaction.
+          Prices are agreed before the service. Ecothynx may charge a small operational commission on each transaction.
         </span>
       </p>
 
@@ -69,11 +69,11 @@ export default function TermsPage() {
       <h2><span data-sw>5. Uwajibikaji</span><span data-en>5. Liability</span></h2>
       <p>
         <span data-sw>
-          WasteLink haihusiki moja kwa moja na ubora wa huduma inayotolewa kati ya watumiaji, lakini
+          Ecothynx haihusiki moja kwa moja na ubora wa huduma inayotolewa kati ya watumiaji, lakini
           tunafanya kila jitihada kuweka jukwaa salama na la kuaminika. Migogoro inaweza kuripotiwa kupitia jukwaa.
         </span>
         <span data-en>
-          WasteLink is not directly responsible for the quality of the service exchanged between users, but
+          Ecothynx is not directly responsible for the quality of the service exchanged between users, but
           we make every effort to keep the platform safe and trustworthy. Disputes can be reported through the platform.
         </span>
       </p>

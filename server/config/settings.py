@@ -133,7 +133,7 @@ CSRF_COOKIE_SECURE = not DEBUG
 # name and prefer the HTTP API (more robust than SMTP on hosts that block port
 # 465). The "from" address must be on a Resend-verified domain (methynix.com).
 RESEND_API_KEY = env("RESEND_API_KEY", "") or env("SMTP_PASS", "")
-DEFAULT_FROM_EMAIL = env("EMAIL_FROM", env("DEFAULT_FROM_EMAIL", "WasteLink <info@methynix.com>"))
+DEFAULT_FROM_EMAIL = env("EMAIL_FROM", env("DEFAULT_FROM_EMAIL", "Ecothynx <info@methynix.com>"))
 
 # SMTP fallback — only used when no Resend key is set. Resend uses
 # smtp.resend.com:465 (SSL). Otherwise the console backend prints codes to the
@@ -158,7 +158,7 @@ PAYMENTS_MOBILE_ENABLED = env("PAYMENTS_MOBILE_ENABLED", "false").lower() == "tr
 
 # --- Meseji SMS ---
 MESEJI_API_KEY = env("MESEJI_API_KEY", "")
-MESEJI_SENDER_ID = env("MESEJI_SENDER_ID", "WASTECH")
+MESEJI_SENDER_ID = env("MESEJI_SENDER_ID", "ECOTHYNX")
 
 # --- AzamPay ---
 AZAMPAY_APP_NAME = env("AZAMPAY_APP_NAME", "")

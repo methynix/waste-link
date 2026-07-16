@@ -48,13 +48,9 @@ export default function DashboardNav() {
     <>
       <header className="dash-nav">
         <div className="dash-nav-inner">
-          <Link className="mark" href="/dashboard" aria-label="WasteLink">
-            <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-              <rect x="1.5" y="1.5" width="37" height="37" rx="9" fill="#0D47A1" />
-              <path d="M6 27 L24 9" stroke="#C0CA33" strokeWidth="7" />
-              <circle cx="22" cy="22" r="8.5" fill="none" stroke="#fff" strokeWidth="3.4" />
-            </svg>
-            <span className="word">WasteLink</span>
+          <Link className="mark" href="/dashboard" aria-label="Ecothynx">
+            <img src="/icons/icon-192.png" alt="" width={34} height={34} className="mark-logo" />
+            <span className="word">Ecothynx</span>
           </Link>
           <nav className="dash-links">
             {items.map((it) => (

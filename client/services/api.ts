@@ -1,6 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/graphql/";
 
-export const TOKEN_KEY = "wastelink-token";
+export const TOKEN_KEY = "ecothynx-token";
 
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;

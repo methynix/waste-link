@@ -11,7 +11,7 @@ MESEJI_BASE = "https://meseji.co.tz/api/v1"
 def send_sms(phone: str, message: str) -> bool:
     """Send an SMS via the Meseji API. Returns True if successfully queued."""
     api_key = getattr(settings, "MESEJI_API_KEY", "")
-    sender_id = getattr(settings, "MESEJI_SENDER_ID", "WASTECH")
+    sender_id = getattr(settings, "MESEJI_SENDER_ID", "ECOTHYNX")
     if not api_key:
         logger.warning("MESEJI_API_KEY not configured — SMS not sent to %s", phone)
         return False

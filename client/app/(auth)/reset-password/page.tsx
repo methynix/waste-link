@@ -14,7 +14,7 @@ export default function ResetPasswordPage() {
   const router = useRouter();
   const [email, setEmail] = useState(() => {
     try {
-      return localStorage.getItem("wastelink-reset-email") || "";
+      return localStorage.getItem("ecothynx-reset-email") || "";
     } catch {
       return "";
     }
@@ -32,7 +32,7 @@ export default function ResetPasswordPage() {
       const ok = await resetPassword(email, code, newPassword);
       if (ok) {
         try {
-          localStorage.removeItem("wastelink-reset-email");
+          localStorage.removeItem("ecothynx-reset-email");
         } catch {}
         router.push("/login");
       }

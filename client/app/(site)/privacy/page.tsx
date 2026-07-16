@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How WasteLink collects, uses, and protects your personal data — phone number, email, and location — across Tanzania.",
+    "How Ecothynx collects, uses, and protects your personal data — phone number, email, and location — across Tanzania.",
   alternates: { canonical: "/privacy" },
 };
 

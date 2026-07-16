@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://wastelink.methynix.com";
+const SITE_URL = "https://ecothynx.methynix.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

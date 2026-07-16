@@ -61,7 +61,7 @@ class RequestOTP(graphene.Mutation):
         from platform_core.services.meseji import send_sms
         code = f"{random.randint(0, 999999):06d}"
         PhoneOTP.issue(phone=phone, code=code)
-        send_sms(phone, f"Your WasteTech verification code is {code}. It expires in 10 minutes.")
+        send_sms(phone, f"Your Ecothynx verification code is {code}. It expires in 10 minutes.")
         return RequestOTP(sent=True)
 
 
@@ -148,8 +148,8 @@ class RequestPasswordReset(graphene.Mutation):
             EmailOTP.issue(email=email, code=code)
             send_email(
                 email,
-                "WasteLink password reset code",
-                f"Your WasteLink password reset code is {code}. "
+                "Ecothynx password reset code",
+                f"Your Ecothynx password reset code is {code}. "
                 f"It expires in 10 minutes. If you did not request this, ignore this email.",
             )
         return RequestPasswordReset(sent=True)

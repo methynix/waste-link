@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
     try {
       await requestPasswordReset(email);
       try {
-        localStorage.setItem("wastelink-reset-email", email);
+        localStorage.setItem("ecothynx-reset-email", email);
       } catch {}
       router.push("/reset-password");
     } catch (err) {

@@ -12,7 +12,7 @@ export default function VerifyPage() {
   const router = useRouter();
   const [phone, setPhone] = useState(() => {
     try {
-      return localStorage.getItem("wastelink-pending-phone") || "";
+      return localStorage.getItem("ecothynx-pending-phone") || "";
     } catch {
       return "";
     }
