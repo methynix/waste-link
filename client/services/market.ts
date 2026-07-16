@@ -1,3 +1,4 @@
+// Recycling market API bindings.
 import { graphql } from "./api";
 import type { MaterialCategory, Offer, RecyclingListing } from "@/types";
 
