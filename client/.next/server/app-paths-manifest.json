@@ -1,7 +1,14 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js",
+  "/(auth)/forgot-password/page": "app/(auth)/forgot-password/page.js",
   "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(auth)/register/page": "app/(auth)/register/page.js",
+  "/(auth)/reset-password/page": "app/(auth)/reset-password/page.js",
+  "/(auth)/verify/page": "app/(auth)/verify/page.js",
   "/dashboard/generator/page": "app/dashboard/generator/page.js",
+  "/dashboard/collector/page": "app/dashboard/collector/page.js",
   "/dashboard/market/page": "app/dashboard/market/page.js",
-  "/dashboard/wallet/page": "app/dashboard/wallet/page.js"
+  "/dashboard/wallet/page": "app/dashboard/wallet/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }

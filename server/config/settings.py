@@ -56,9 +56,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+DB_ENGINE = env("DB_ENGINE", "django.db.backends.sqlite3")
 DATABASES = {
     "default": {
-        "ENGINE": env("DB_ENGINE", "django.db.backends.sqlite3"),
+        "ENGINE": DB_ENGINE,
         "NAME": env("DB_NAME", str(BASE_DIR / "db.sqlite3")),
         "USER": env("DB_USER", ""),
         "PASSWORD": env("DB_PASSWORD", ""),
@@ -66,6 +67,11 @@ DATABASES = {
         "PORT": env("DB_PORT", ""),
     }
 }
+# Postgres (e.g. Neon) needs SSL; a persistent connection avoids reconnecting
+# on every request. Neon's serverless endpoint requires sslmode=require.
+if "postgresql" in DB_ENGINE:
+    DATABASES["default"]["OPTIONS"] = {"sslmode": env("DB_SSLMODE", "require")}
+    DATABASES["default"]["CONN_MAX_AGE"] = env("DB_CONN_MAX_AGE", 600, cast=int)
 
 AUTH_USER_MODEL = "users.User"
 

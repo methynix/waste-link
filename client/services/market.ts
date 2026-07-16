@@ -44,7 +44,7 @@ export async function createListing(
         listing { ${LISTING_FIELDS} }
       }
     }`,
-    input
+    input as unknown as Record<string, unknown>
   );
   return data.createListing.listing;
 }
