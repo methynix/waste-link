@@ -1,0 +1,7 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/dashboard/generator/page": "app/dashboard/generator/page.js",
+  "/dashboard/market/page": "app/dashboard/market/page.js",
+  "/dashboard/wallet/page": "app/dashboard/wallet/page.js"
+}
