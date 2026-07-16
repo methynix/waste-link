@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
       <footer className="site">
@@ -23,18 +25,29 @@ export default function Footer() {
                   </ul>
                 </div>
                 <div className="foot-col">
+                  <h4><span data-sw>Kampuni</span><span data-en>Company</span></h4>
+                  <ul>
+                    <li><Link href="/support"><span data-sw>Tuunge mkono</span><span data-en>Support us</span></Link></li>
+                    <li><Link href="/terms"><span data-sw>Sheria na masharti</span><span data-en>Terms &amp; conditions</span></Link></li>
+                    <li><Link href="/privacy"><span data-sw>Sera ya faragha</span><span data-en>Privacy policy</span></Link></li>
+                  </ul>
+                </div>
+                <div className="foot-col">
                   <h4><span data-sw>Wasiliana</span><span data-en>Contact</span></h4>
                   <ul>
                     <li>Dar es Salaam, Tanzania</li>
-                    <li>+255 715 455 422</li>
-                    <li>info@methynix.com</li>
+                    <li><a href="tel:+255715455422">+255 715 455 422</a></li>
+                    <li><a href="mailto:info@methynix.com">info@methynix.com</a></li>
                   </ul>
                 </div>
               </div>
               <div className="stripe"></div>
               <div className="wrap foot-bottom">
                 <span>© {new Date().getFullYear()} WasteLink</span>
-                <span><span data-sw>Imejengwa kwa ajili ya miji ya Tanzania na Methynix Software.</span><span data-en>Built for Tanzania's cities by Methynix Software.</span></span>
+                <span>
+                  <span data-sw>Imejengwa na </span><span data-en>Built by </span>
+                  <a href="https://methynix.com" target="_blank" rel="noopener noreferrer" className="foot-brand">Methynix Software</a>
+                </span>
               </div>
             </footer>
   );
